@@ -1,0 +1,92 @@
+<div class="emi-calc-container" >
+    <div class="col-md-6">
+        <form [formGroup]="mortgageForm">
+            <div class="emi-inputs col-md-3 mx-4 pt-4">
+                <label class="form-label">Loan Amount</label>
+                <div class="input-group pt-3">
+                    <span class="input-group-text" id="inputGroupPrepend">$</span>
+                    <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && formDetails.loanAmount.errors }" formControlName="loanAmount" aria-describedby="inputGroupPrepend" required="">    
+                    <div *ngIf="submitted && formDetails.loanAmount.errors"  class="invalid-feedback">
+                        <div *ngIf="formDetails.loanAmount.errors?.required">
+                          Loan Amount is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="emi-inputs col-md-3 mt-4 mx-4">
+                <label class="form-label">Interest Rate</label>
+                <div class="input-group pt-3">
+                    <span class="input-group-text" id="inputGroupPrepend">%</span>
+                    <input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && formDetails.interestPercent.errors }" formControlName="interestPercent" aria-describedby="inputGroupPrepend" required="">    
+                    <div *ngIf="submitted && formDetails.interestPercent.errors"  class="invalid-feedback">
+                        <div *ngIf="formDetails.interestPercent.errors?.required">
+                          Interest Percentage is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="emi-inputs col-md-3 mt-4 mx-4">
+                <label class="form-label">Amortization Period</label>
+                <input type="text" [ngClass]="{ 'is-invalid': submitted && formDetails.amortizationPeriod.errors }" formControlName="amortizationPeriod" class="form-control mt-3 ">
+                <div *ngIf="submitted && formDetails.amortizationPeriod.errors"  class="invalid-feedback">
+                    <div *ngIf="formDetails.amortizationPeriod.errors?.required">
+                        Amortization Period is required.
+                    </div>
+                </div>
+            </div>
+            <div class="emi-inputs col-md-3 mt-4 mx-4">
+                <label class="form-label">Loan Term</label>
+                <input type="text" [ngClass]="{ 'is-invalid': submitted && formDetails.loanTerm.errors }" formControlName="loanTerm" class="form-control mt-3 ">
+                <div *ngIf="submitted && formDetails.loanTerm.errors"  class="invalid-feedback">
+                    <div *ngIf="formDetails.loanTerm.errors?.required">
+                      Loan Term is required.
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-12 mt-4 mx-4">
+                <button class="btn btn-primary" (click)="calculateEMI()">Calculate</button>
+              </div>
+        </form>
+    </div>
+   
+    <div class="col-md-6 mt-4" *ngIf="submitted && mortgageForm.valid">
+        <h3>Calculation Summary</h3>
+        <table class="table table-bordered mt-4">
+            <thead>
+              <tr>
+                <th >Category</th>
+                <th >Term</th>
+                <th >Amortization Period</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th >Num. of Payments</th>
+                <td>{{formDetails.loanTerm.value * 12}}</td>
+                <td>{{formDetails.amortizationPeriod.value * 12}}</td>
+              </tr>
+              <tr>
+                <th >Mortgage Payment</th>
+                <td>{{emiVal}}</td>
+                <td>{{emiVal}}</td>
+              </tr>
+              <tr>
+                <th >Principal Payments</th>
+                <td>{{principalCalc}}</td>
+                <td>{{formDetails.loanAmount.value}}</td>
+              </tr>
+              <tr>
+                <th >Interest Payments</th>
+                <td>{{interestCalc}}</td>
+                <td>{{interestCalc * formDetails.amortizationPeriod.value * 12}}</td>
+              </tr>
+              <tr>
+                <th >Total Cost</th>
+                <td>{{formDetails.loanTerm.value * 12 * emiVal}}</td>
+                <td>{{(formDetails.loanAmount.value * 1) + (interestCalc * formDetails.amortizationPeriod.value * 12)}}</td>
+              </tr>
+            </tbody>
+          </table>    
+        </div>
+</div>
