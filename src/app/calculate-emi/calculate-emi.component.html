@@ -51,6 +51,7 @@
     </div>
    
     <div class="col-md-6 mt-4" *ngIf="submitted && mortgageForm.valid">
+       <div>
         <h3>Calculation Summary</h3>
         <table class="table table-bordered mt-4">
             <thead>
@@ -73,12 +74,12 @@
               </tr>
               <tr>
                 <th >Principal Payments</th>
-                <td>{{principalCalc}}</td>
+                <td>{{principalCalc * 12 * formDetails.loanTerm.value}}</td>
                 <td>{{formDetails.loanAmount.value}}</td>
               </tr>
               <tr>
                 <th >Interest Payments</th>
-                <td>{{interestCalc}}</td>
+                <td>{{interestCalc * 12 * formDetails.loanTerm.value}}</td>
                 <td>{{interestCalc * formDetails.amortizationPeriod.value * 12}}</td>
               </tr>
               <tr>
@@ -87,6 +88,49 @@
                 <td>{{(formDetails.loanAmount.value * 1) + (interestCalc * formDetails.amortizationPeriod.value * 12)}}</td>
               </tr>
             </tbody>
-          </table>    
+          </table> 
+          
+       </div>
+          <div class="mt-4">
+            <h3>Mortgage Summary</h3>
+            <div class="mortgage-summary">
+                <p> Over the {{formDetails.amortizationPeriod.value}}-year amortization period, you will:
+                </p>
+                <ul>
+                    <li>
+                        have made {{formDetails.amortizationPeriod.value * 12}} monthly (12x per year) payments of ${{emiVal}}.
+                    </li>
+                    <li>
+                        have paid ${{formDetails.loanAmount.value}} in principal, ${{interestCalc * formDetails.amortizationPeriod.value * 12}} in interest, for a total of ${{(formDetails.loanAmount.value * 1) + (interestCalc * formDetails.amortizationPeriod.value * 12)}}.
+                    </li>
+                    
+                </ul>
+            </div>
+            <div class="mortgage-summary">
+                <p> Over the {{formDetails.loanTerm.value}}-year term, you will:
+                </p>
+                <ul>
+                    <li>
+                        have made {{formDetails.loanTerm.value * 12}} monthly (12x per year) payments of ${{emiVal}}.
+                    </li>
+                    <li>
+                        have paid ${{principalCalc * 12 * formDetails.loanTerm.value}} in principal, ${{interestCalc * formDetails.loanTerm.value * 12}} in interest, for a total of ${{formDetails.loanTerm.value * 12 * emiVal}}.
+                    </li>
+                    
+                </ul>
+            </div>
+            <div class="mortgage-summary">
+                <p> At the end of your {{formDetails.loanTerm.value}}-year term, you will:
+                </p>
+                <ul>
+                    <li>
+                        have a balance of ${{formDetails.loanAmount.value * 1 - (principalCalc * 12 * formDetails.loanTerm.value)}}.
+                    </li>
+                    
+                </ul>
+            </div>
+
         </div>
+    </div>
+       
 </div>
